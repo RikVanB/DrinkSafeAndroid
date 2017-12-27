@@ -1,0 +1,48 @@
+<resources>
+    <string name="facebook_app_id">525971167775095</string>
+    <string name="fb_login_protocol_scheme">fb525971167775095</string>
+    <string name="app_name">Drink Safe</string>
+
+    <string name="first_name">first name</string>
+    <string name="last_name">last name</string>
+    <string name="e_mail">e-mail</string>
+    <string name="password">password</string>
+    <string name="date_of_birth">date of birth</string>
+    <string name="weight">weight</string>
+    <string name="length">length</string>
+    <string name="gender">gender</string>
+    <string name="men">men</string>
+    <string name="woman">woman</string>
+    <string name="register">register</string>
+    <string name="search">Search</string>
+    <string name="start">start</string>
+    <string name="overview">overview</string>
+    <string name="stop">stop</string>
+    <string name="add">add</string>
+    <string name="settings">Settings</string>
+    <string name="personal_info">Personal info</string>
+    <string name="confirm">Confirm</string>
+    <string name="message_settings">Message settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="NoUserMade">Make a user first</string>
+    <string name="sendAfter">Send after</string>
+    <string name="isAdded">is added!</string>
+    <string name="UserIsAdded">User is added!</string>
+    <string name="SendMessageAfterXHours">Send this message after X hours</string>
+    <string name="SendMessageAfterStop">Send this message when you hit stop</string>
+    <string name="quantity">Quantity</string>
+    <string-array name="settings_array">
+        <item>List contacts</item>
+        <item>Message settings</item>
+    </string-array>
+    <string-array name="hours">
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>3 hours</item>
+        <item>4 hours</item>
+        <item>5 hours</item>
+        <item>6 hours</item>
+        <item>7 hours</item>
+        <item>8 hours</item>
+    </string-array>
+</resources>

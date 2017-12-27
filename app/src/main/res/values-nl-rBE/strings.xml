@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebook_app_id">525971167775095</string>
+    <string name="first_name">voornaam</string>
+    <string name="last_name">achternaam</string>
+    <string name="e_mail">e-mail</string>
+    <string name="password">wachtwoord</string>
+    <string name="date_of_birth">geboortedatum</string>
+    <string name="weight">gewicht</string>
+    <string name="length">lengte</string>
+    <string name="gender">geslacht</string>
+    <string name="men">man</string>
+    <string name="woman">vrouw</string>
+    <string name="register">registreren</string>
+    <string name="search">Zoeken</string>
+    <string name="start">start</string>
+    <string name="overview">overzicht</string>
+    <string name="stop">stop</string>
+    <string name="add">toevoegen</string>
+    <string name="settings">Instellingen</string>
+    <string name="personal_info">Persoonlijke info</string>
+    <string name="NoUserMade">Maak eerst een gebruiker</string>
+    <string name="sendAfter">Send after</string>
+    <string name="isAdded">is toegevoegd!</string>
+    <string name="UserIsAdded">Gebruiker is toegevoegd!</string>
+    <string name="SendMessageAfterXHours">Verzend bericht na X uur</string>
+    <string name="SendMessageAfterStop">Verzend bericht als je op stop drukt</string>
+    <string name="quantity">Aantal</string>
+    <string-array name="settings_array">
+        <item>Contactenlijst</item>
+        <item>Berichten instellingen</item>
+    </string-array>
+    <string-array name="hours">
+        <item>1 uur</item>
+        <item>2 uur</item>
+        <item>3 uur</item>
+        <item>4 uur</item>
+        <item>5 uur</item>
+        <item>6 uur</item>
+        <item>7 uur</item>
+        <item>8 uur</item>
+    </string-array>
+</resources>
