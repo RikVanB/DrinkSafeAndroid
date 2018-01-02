@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -40,7 +41,8 @@
         <activity android:name=".MessageSettingsActivity" />
         <activity android:name=".AddContactActivity" />
         <activity android:name=".ListContactsActivity" />
-        <activity android:name=".SendMessageSettingsActivity"></activity>
+        <activity android:name=".SendMessageSettingsActivity" />
+        <activity android:name=".OverviewCurrentDrinkActivity"></activity>
     </application>
 
 </manifest>

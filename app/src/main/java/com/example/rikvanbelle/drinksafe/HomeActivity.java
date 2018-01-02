@@ -1,28 +1,20 @@
 package com.example.rikvanbelle.drinksafe;
 
 import android.Manifest;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.support.v4.app.ActivityCompat;
+import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -39,10 +31,8 @@ import com.example.rikvanbelle.drinksafe.models.Message;
 import com.example.rikvanbelle.drinksafe.models.User;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity {
     CountUpTimer timer;
@@ -64,14 +54,13 @@ public class HomeActivity extends AppCompatActivity {
     SearchView searchView;
     TextView currentAvg;
 
-    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        //https://developer.android.com/training/appbar/index.html
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar_with_search);
         setSupportActionBar(myToolbar);
 
@@ -97,6 +86,7 @@ public class HomeActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //http://www.learn-android-easily.com/2013/03/returning-result-from-activity.html
                 Intent intent = new Intent(HomeActivity.this, DetailBeerActivity.class);
                 Beer beer = (Beer) adapterView.getItemAtPosition(i);
                 intent.putExtra("selectedBeer", beer);
@@ -138,48 +128,18 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onStartActivity(View view) {
-        if (checkIfUserExist()) {
-            if (currentUser == null) {
-                currentUser = AppDatabase.getAppDatabase(getApplicationContext()).userDAO().getAll().get(0);
-            }
-            contacts = AppDatabase.getAppDatabase(getApplicationContext()).contactDAO().getAll();
-            drinkActivity = new DrinkActivity(currentUser);
-            timer.start();
-            startButton.setEnabled(false);
-            overviewButton.setEnabled(true);
-            stopButton.setEnabled(true);
-        }
+        startDrinkActivity();
     }
 
     public void onOverview(View view) {
         //TODO: overzicht van gedronken dranken
-        Intent intent = new Intent(this, OverviewDrinkActivity.class);
+        Intent intent = new Intent(this, OverviewCurrentDrinkActivity.class);
         intent.putExtra("listOfBeers", drinkActivity.getListOfBeers());
         startActivity(intent);
     }
 
     public void onStopActivity(View view) {
-        //TODO: stop activiteit
-        timer.stop();
-        drinkActivity.stopActivity();
-        TextView alcoholPercentage = (TextView) findViewById(R.id.alcohol_percentage);
-        alcoholPercentage.setText("0 ‰");
-
-        AppDatabase.getAppDatabase(getApplicationContext()).drinkActivityDAO().insertAll(drinkActivity);
-        List<DrinkActivity> drinkActivityList = AppDatabase.getAppDatabase(getApplicationContext()).drinkActivityDAO().getAll();
-        lv.setAdapter(null);
-
-        Message mes = AppDatabase.getAppDatabase(getApplicationContext()).messageDAO().messageForStop();
-        if (mes != null) {
-            SmsManager manager = SmsManager.getDefault();
-            for (Contact c : contacts) {
-                manager.sendTextMessage(c.getNumber(), null, mes.getMessage(), null, null);
-            }
-        }
-        startButton.setEnabled(true);
-        overviewButton.setEnabled(false);
-        stopButton.setEnabled(false);
-
+        stopDrinkActivity();
     }
 
     private void initTimer() {
@@ -189,8 +149,10 @@ public class HomeActivity extends AppCompatActivity {
                 Date date = new Date(elapsedTime);
                 int aantalUur = Integer.parseInt(Character.toString(spinner.getSelectedItem().toString().charAt(0)));
                 if (date.getTime() / (spinner.getSelectedItem().toString().charAt(0) * 60) == 1) {
+                    //https://www.tutorialspoint.com/android/android_sending_sms.htm
                     int permissionCheck = ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.SEND_SMS);
                     if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+
                         Message mess = AppDatabase.getAppDatabase(getApplicationContext()).messageDAO().messageForXHours();
                         if (mess != null) {
                             SmsManager manager = SmsManager.getDefault();
@@ -214,7 +176,14 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 if (checkIfUserExist()) {
-                    client.execute(s);
+                    if (drinkActivity == null) {
+                        startDrinkActivity();
+                    }
+                    if (client.getStatus() != AsyncTask.Status.RUNNING) {
+                        client.execute(s);
+                    } else {
+                        Toast.makeText(HomeActivity.this, "API is aan het zoeken", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 searchView.clearFocus();
                 return false;
@@ -237,4 +206,40 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    private void startDrinkActivity() {
+        if (checkIfUserExist()) {
+            if (currentUser == null) {
+                currentUser = AppDatabase.getAppDatabase(getApplicationContext()).userDAO().getAll().get(0);
+            }
+            contacts = AppDatabase.getAppDatabase(getApplicationContext()).contactDAO().getAll();
+            drinkActivity = new DrinkActivity(currentUser);
+            timer.start();
+            startButton.setEnabled(false);
+            overviewButton.setEnabled(true);
+            stopButton.setEnabled(true);
+        }
+    }
+
+    private void stopDrinkActivity() {
+        timer.stop();
+        drinkActivity.stopActivity();
+        TextView alcoholPercentage = (TextView) findViewById(R.id.alcohol_percentage);
+        alcoholPercentage.setText("0 ‰");
+
+        AppDatabase.getAppDatabase(getApplicationContext()).drinkActivityDAO().insertAll(drinkActivity);
+        List<DrinkActivity> drinkActivityList = AppDatabase.getAppDatabase(getApplicationContext()).drinkActivityDAO().getAll();
+        lv.setAdapter(null);
+        //https://www.tutorialspoint.com/android/android_sending_sms.htm
+        Message mes = AppDatabase.getAppDatabase(getApplicationContext()).messageDAO().messageForStop();
+        if (mes != null) {
+            SmsManager manager = SmsManager.getDefault();
+            for (Contact c : contacts) {
+                manager.sendTextMessage(c.getNumber(), null, mes.getMessage(), null, null);
+            }
+        }
+        startButton.setEnabled(true);
+        overviewButton.setEnabled(false);
+        stopButton.setEnabled(false);
+
+    }
 }
