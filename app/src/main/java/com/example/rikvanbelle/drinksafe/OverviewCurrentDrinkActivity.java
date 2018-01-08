@@ -13,7 +13,7 @@ import com.example.rikvanbelle.drinksafe.models.Beer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class OverviewCurrentDrinkActivity extends AppCompatActivity implements OverviewDrinksFragment.OnBeerDetailListener {
+public class OverviewCurrentDrinkActivity extends AppCompatActivity{
 
     ListView listViewBeers;
 
@@ -42,11 +42,6 @@ public class OverviewCurrentDrinkActivity extends AppCompatActivity implements O
                 detailBeerFragment.updateValues(beer);
             }
         });
-    }
-
-    @Override
-    public void onRegisterButtonListener(View v) {
-
     }
 
 }

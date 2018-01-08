@@ -21,34 +21,10 @@ import java.util.HashMap;
 
 public class OverviewDrinksFragment extends Fragment {
 
-    ListView listViewBeers;
+    public OverviewDrinksFragment(){
 
-
-    public interface OnBeerDetailListener {
-        public void onRegisterButtonListener(View v);
     }
 
-    OnBeerDetailListener mCallback;
-
-/*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_overview_drinks);
-
-        listViewBeers = (ListView) findViewById(R.id.list_beers);
-
-        Intent intent = this.getIntent();
-        HashMap<Beer, Integer> listOfBeers = (HashMap<Beer, Integer>) intent.getSerializableExtra("listOfBeers");
-
-        ArrayList<Beer> allBeers = new ArrayList<Beer>();
-        allBeers.addAll(listOfBeers.keySet());
-
-        AdapterBeerQuantity adapterBeer = new AdapterBeerQuantity(this, R.layout.row_beer_quantity_layout, allBeers);
-        adapterBeer.setBeersWithQuantity(listOfBeers);
-        listViewBeers.setAdapter(adapterBeer);
-    }
-*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

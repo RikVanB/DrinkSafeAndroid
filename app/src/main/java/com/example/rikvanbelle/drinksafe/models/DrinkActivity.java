@@ -8,6 +8,7 @@ import android.arch.persistence.room.TypeConverters;
 
 import com.example.rikvanbelle.drinksafe.HomeActivity;
 import com.example.rikvanbelle.drinksafe.db.AppDatabase;
+import com.example.rikvanbelle.drinksafe.helpers.CountUpTimer;
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
@@ -25,6 +26,8 @@ public class DrinkActivity implements Serializable {
     private int drinkActivityId;
     @Ignore
     private User currentUser;
+    @Ignore
+    private CountUpTimer timer;
     @TypeConverters(DateTypeConverter.class)
     @ColumnInfo(name = "start_time")
     private Date startTime;
